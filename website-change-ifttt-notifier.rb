@@ -53,7 +53,7 @@ begin
 
   puts "Change detected is #{percentage_change}%."
 
-  if percentage_change > change_threshold
+  if percentage_change > change_threshold.to_i
     puts "Threshold met, notifying an updating..."
 
     uri = URI.parse(ifttt_webhook)
