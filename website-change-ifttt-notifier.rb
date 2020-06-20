@@ -50,7 +50,7 @@ begin
     percentage_change = 0
   else
     line_count = diff.to_s.lines.count
-    diff_size = diff.to_s.scan(/^-/).size
+    diff_size = diff.to_s.scan(/^[-\+]/).size
 
     percentage_change = (diff_size.to_f / line_count.to_f) * 100.00
   end
