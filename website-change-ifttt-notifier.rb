@@ -31,7 +31,7 @@ options.add_argument('--disable-gpu')
 
 def get_source(url)
   @driver.navigate.to url
-  @driver.page_source.gsub(/\n\s*{2,}/, "\n")
+  @driver.find_element(tag_name: "body").attribute("textContent").gsub(/\n\s*{2,}/, "\n")
 end
 
 begin
@@ -46,10 +46,14 @@ begin
 
   diff = Diffy::Diff.new(master_contents, current_contents)
 
-  line_count = diff.to_s.lines.count
-  diff_size = diff.to_s.scan(/^-/).size
+  if diff.to_s.empty?
+    percentage_change = 0
+  else
+    line_count = diff.to_s.lines.count
+    diff_size = diff.to_s.scan(/^-/).size
 
-  percentage_change = (diff_size.to_f / line_count.to_f) * 100.00
+    percentage_change = (diff_size.to_f / line_count.to_f) * 100.00
+  end
 
   puts "Change detected is #{percentage_change}%."
 
