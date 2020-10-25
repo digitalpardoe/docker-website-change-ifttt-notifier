@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
 
+require 'open-uri'
+require 'nokogiri'
+require 'diffy'
 require 'net/http'
 require 'uri'
-require 'selenium-webdriver'
-require 'diffy'
 
 lock_file = File.open("/tmp/website-change-ifttt-notifier.lock", File::CREAT)
 lock_state = lock_file.flock(File::LOCK_EX|File::LOCK_NB)
@@ -22,16 +23,9 @@ output_directory = "/output"
 master_file = "#{output_directory}/master.html"
 ifttt_webhook = "https://maker.ifttt.com/trigger/#{ifttt_webhook_event}/with/key/#{ifttt_webhook_key}"
 
-options = Selenium::WebDriver::Chrome::Options.new
-options.add_argument('--no-sandbox')
-options.add_argument('--headless')
-options.add_argument('--disable-gpu')
-
-@driver = Selenium::WebDriver.for :chrome, options: options
-
 def get_source(url)
-  @driver.navigate.to url
-  @driver.find_element(tag_name: "body").attribute("textContent").gsub(/\n\s*{2,}/, "\n")
+  page_body = Nokogiri::HTML.parse(URI.open(url)).at("body")
+  page_body.text.gsub(/\n\s*{2,}/, "\n")
 end
 
 begin

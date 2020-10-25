@@ -1,7 +1,8 @@
 FROM alpine:3.12
 
-RUN apk add --no-cache ruby chromium-chromedriver ruby-json chromium
-RUN gem install selenium-webdriver diffy
+RUN apk add --no-cache ruby ruby-json build-base ruby-dev libxml2-dev libxslt-dev
+RUN gem install diffy
+RUN gem install nokogiri -- --use-system-libraries
 
 ENV WEBSITE_TO_CHECK=""
 ENV IFTTT_WEBHOOK_KEY=""
