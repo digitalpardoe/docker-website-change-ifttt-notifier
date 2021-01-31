@@ -15,3 +15,5 @@ COPY ["website-change-ifttt-notifier.rb", "/usr/local/bin/website-change-ifttt-n
 RUN echo '* * * * * /usr/local/bin/website-change-ifttt-notifier' > /etc/crontabs/root
 
 CMD ["/usr/sbin/crond", "-f"]
+
+LABEL org.opencontainers.image.source https://github.com/digitalpardoe/docker-website-change-ifttt-notifier
